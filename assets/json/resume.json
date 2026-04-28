@@ -1,0 +1,79 @@
+{
+  "basics": {
+    "name": "Ronak Pradhan",
+    "label": "Applied Scientist",
+    "image": "",
+    "email": "hi@ronakpradhan.com",
+    "summary": "Applied Scientist focused on large language models, fine-tuning, and applied ML in production. Currently domain-adapting LLMs for healthcare reasoning at Optum. Previously Applied Scientist Intern at Amazon.",
+    "location": {
+      "city": "Remote",
+      "countryCode": "IN",
+      "region": "India"
+    },
+    "profiles": [
+      { "network": "GitHub", "url": "https://github.com/Ronak-Pradhan" },
+      { "network": "LinkedIn", "url": "https://www.linkedin.com/in/ronak-pradhan/" }
+    ]
+  },
+  "work": [
+    {
+      "name": "Optum (UnitedHealth Group)",
+      "position": "Data Scientist Intern",
+      "startDate": "2024-01",
+      "endDate": "Present",
+      "summary": "Domain-adapting LLMs for sophisticated reasoning on complex healthcare documents.",
+      "highlights": [
+        "Fine-tuned BioClinical BERT with HuggingFace transformers + peft for healthcare textual entailment.",
+        "Significantly improved precision on the entailment task.",
+        "Dockerized a Flask service and deployed BioClinical BERT on AWS SageMaker as an asynchronous endpoint."
+      ]
+    },
+    {
+      "name": "Amazon",
+      "position": "Applied Scientist Intern",
+      "startDate": "2023-02",
+      "endDate": "2023-07",
+      "summary": "Improved product retrieval for Amazon.in with GANs and LLMs over a 100M+ row, terabyte-scale training set.",
+      "highlights": [
+        "+0.4% Precision @ 1% Recall, +0.2% ROC AUC, +0.4% Cold-Start ROC AUC.",
+        "Built PySpark + SQL pipelines over 100M+ row, terabyte-scale behavioral logs.",
+        "Communicated results to 10+ scientists; iterated based on review feedback."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Manipal Institute of Technology, Manipal",
+      "url": "https://manipal.edu/mit.html",
+      "area": "Electronics & Communication Engineering",
+      "studyType": "B.Tech",
+      "endDate": "2023-09"
+    }
+  ],
+  "skills": [
+    {
+      "name": "LLMs & fine-tuning",
+      "level": "Advanced",
+      "keywords": ["HuggingFace transformers", "PEFT", "LoRA", "QLoRA", "BioClinical BERT", "instruction tuning"]
+    },
+    {
+      "name": "Modeling",
+      "level": "Advanced",
+      "keywords": ["PyTorch", "TensorFlow", "GANs", "recommender systems", "retrieval", "textual entailment"]
+    },
+    {
+      "name": "Data at scale",
+      "level": "Advanced",
+      "keywords": ["PySpark", "SQL", "100M+ row pipelines", "terabyte-scale feature engineering"]
+    },
+    {
+      "name": "Production / MLOps",
+      "level": "Intermediate",
+      "keywords": ["AWS SageMaker", "Docker", "Flask", "AWS Lambda"]
+    }
+  ],
+  "languages": [
+    { "language": "English", "fluency": "Full professional proficiency" },
+    { "language": "Hindi", "fluency": "Native" }
+  ]
+}

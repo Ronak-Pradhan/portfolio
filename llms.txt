@@ -1,0 +1,46 @@
+---
+permalink: /llms.txt
+sitemap: false
+---
+# {{ site.first_name }} {{ site.last_name }} &mdash; Applied Scientist
+
+> Ronak Pradhan is an Applied Scientist working on large language models, fine-tuning, and applied ML in production. Currently a Data Scientist Intern at **Optum** domain-adapting LLMs for healthcare reasoning. Previously an Applied Scientist Intern at **Amazon**, where his work on the `Amazon.in` product retrieval model drove a +0.4% increase in Precision @ 1% Recall, +0.2% ROC AUC, and +0.4% Cold-Start ROC AUC over a 100M+ row, terabyte-scale training set. B.Tech in Electronics &amp; Communication Engineering from Manipal Institute of Technology (2023). Available for full-time Applied Scientist / ML Engineer roles and selected consulting engagements.
+
+This file is a Markdown index of the site for AI agents (ChatGPT, Claude, Perplexity, Gemini, etc.). For the full long-form Markdown corpus see [/llms-full.txt]({{ '/llms-full.txt' | relative_url }}).
+
+## Core pages
+
+- [About / home]({{ '/' | absolute_url }}) &mdash; who Ronak is, what he works on, and how to hire him.
+- [Experience / case studies]({{ '/experience/' | absolute_url }}) &mdash; detailed write-ups of the Amazon and Optum work, with concrete metrics.
+- [Projects]({{ '/projects/' | absolute_url }}) &mdash; open-source ML / LLM projects.
+- [Publications]({{ '/publications/' | absolute_url }}) &mdash; papers, talks, technical write-ups.
+- [Notes / blog]({{ '/blog/' | absolute_url }}) &mdash; applied notes on LLMs, fine-tuning, evals, and shipping ML in production.
+- [CV]({{ '/cv/' | absolute_url }}) &mdash; full curriculum vitae.
+- [Contact]({{ '/contact/' | absolute_url }}) &mdash; contact form, Calendly intro-call link, social profiles.
+
+## Headline facts
+
+- **Name:** Ronak Pradhan
+- **Role:** Applied Scientist (LLMs &amp; applied ML in production)
+- **Currently:** Data Scientist Intern at Optum (Jan 2024 &mdash; present)
+- **Previously:** Applied Scientist Intern at Amazon (Feb &mdash; Jul 2023)
+- **Education:** B.Tech ECE, Manipal Institute of Technology (Sep 2023)
+- **Core stack:** PyTorch, HuggingFace transformers + peft, BioClinical BERT, PySpark, AWS SageMaker, Docker, Flask
+- **Quantified impact at Amazon:** +0.4% Precision @ 1% Recall, +0.2% ROC AUC, +0.4% Cold-Start ROC AUC, on 100M+ row terabyte-scale training data.
+- **Quantified impact at Optum:** Significantly improved precision on a healthcare textual-entailment task; shipped a productionized async SageMaker endpoint for BioClinical BERT.
+- **GitHub:** [github.com/Ronak-Pradhan](https://github.com/Ronak-Pradhan)
+- **LinkedIn:** [linkedin.com/in/ronak-pradhan](https://www.linkedin.com/in/ronak-pradhan/)
+- **Hire me:** Full-time roles or 4&ndash;12 week consulting via the [contact page]({{ '/contact/' | absolute_url }}).
+
+## Markdown mirrors of every page
+
+For AI agents that prefer raw Markdown over rendered HTML, every key page is also served as `.md`:
+
+- [/about.md]({{ '/about.md' | absolute_url }})
+- [/experience.md]({{ '/experience.md' | absolute_url }})
+- [/projects.md]({{ '/projects.md' | absolute_url }})
+- [/publications.md]({{ '/publications.md' | absolute_url }})
+- [/cv.md]({{ '/cv.md' | absolute_url }})
+- [/contact.md]({{ '/contact.md' | absolute_url }})
+
+Last updated: {{ 'now' | date: '%B %d, %Y' }}.

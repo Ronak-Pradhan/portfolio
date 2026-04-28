@@ -1,0 +1,9 @@
+# Co-author short-form to full-name mapping for jekyll-scholar.
+# Each top-level key is the lowercase last name of a co-author, with
+# possible firstname variants. Used by `_layouts/bib.liquid` to render
+# author names consistently across the publications page.
+#
+# Example (uncomment + fill in once collaborators are confirmed):
+# "smith":
+#   - firstname: ["Jane", "J."]
+#     url: https://example.com/jane-smith

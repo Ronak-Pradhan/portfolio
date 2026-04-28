@@ -1,0 +1,17 @@
+# Social media links and identifiers — used both for visible icons and for
+# the sameAs JSON-LD schema (entity recognition / Knowledge Panel signals).
+# Order here = display order. See _includes/metadata.liquid for the keys
+# that al-folio understands.
+
+cv_pdf: /assets/pdf/ronak-pradhan-resume.pdf # path to your CV PDF file
+email: ronak.pradhan@example.com # TODO: replace with real email
+github_username: Ronak-Pradhan
+linkedin_username: ronak-pradhan # TODO: confirm LinkedIn vanity URL
+# x_username: # TODO: add X/Twitter handle
+# scholar_userid: # TODO: add Google Scholar user ID once profile is created
+# orcid_id: # TODO: add ORCID once registered
+# medium_username: # TODO: add Medium handle once active
+# huggingface_id: # TODO: add HuggingFace profile slug
+# wikidata_id: # TODO: add Wikidata Q-ID once a Wikidata entry exists
+
+rss_icon: true # comment this line to hide the RSS icon

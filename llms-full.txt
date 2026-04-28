@@ -1,0 +1,93 @@
+---
+permalink: /llms-full.txt
+sitemap: false
+---
+# {{ site.first_name }} {{ site.last_name }} &mdash; full Markdown corpus
+
+> {{ site.description }}
+
+> This file concatenates the long-form Markdown of the most important pages so an LLM can ingest the full portfolio in a single fetch. For the indexed version see [/llms.txt]({{ '/llms.txt' | absolute_url }}).
+
+Source: [{{ site.url }}{{ site.baseurl }}/]({{ '/' | absolute_url }}). Last updated: {{ 'now' | date: '%B %d, %Y' }}.
+
+---
+
+## /about
+
+{% for p in site.pages %}{% if p.permalink == '/' %}{{ p.content | strip_html | normalize_whitespace }}{% endif %}{% endfor %}
+
+---
+
+## /experience
+
+{% for p in site.pages %}{% if p.permalink == '/experience/' %}{{ p.content | strip_html | normalize_whitespace }}{% endif %}{% endfor %}
+
+---
+
+## /projects
+
+{% for p in site.pages %}{% if p.permalink == '/projects/' %}{{ p.content | strip_html | normalize_whitespace }}{% endif %}{% endfor %}
+
+### Project cards
+
+{% for project in site.projects %}
+- **{{ project.title }}** &mdash; {{ project.description }}{% if project.github %} [GitHub]({{ project.github }}).{% endif %}
+{% endfor %}
+
+---
+
+## /contact
+
+{% for p in site.pages %}{% if p.permalink == '/contact/' %}{{ p.content | strip_html | normalize_whitespace }}{% endif %}{% endfor %}
+
+---
+
+## /cv
+
+**Name:** {{ site.data.cv.cv.name }}
+**Title:** {{ site.data.cv.cv.label }}
+**Location:** {{ site.data.cv.cv.location }}
+
+{{ site.data.cv.cv.summary | strip_html | normalize_whitespace }}
+
+### Education
+{% for item in site.data.cv.cv.sections.Education %}
+- **{{ item.studyType }}, {{ item.area }}** &mdash; {{ item.institution }}, {{ item.location }} ({{ item.start_date }}{% if item.end_date %} – {{ item.end_date }}{% endif %}).
+{% endfor %}
+
+### Experience
+{% for item in site.data.cv.cv.sections.Experience %}
+- **{{ item.position }} &mdash; {{ item.company }}** ({{ item.start_date }} – {{ item.end_date }}, {{ item.location }}).
+  {{ item.summary | strip_html | normalize_whitespace }}
+  {% for h in item.highlights %}
+  - {{ h | strip_html | normalize_whitespace }}
+  {% endfor %}
+{% endfor %}
+
+### Skills
+{% for skill in site.data.cv.cv.sections.Skills %}
+- **{{ skill.name }}**: {{ skill.keywords | strip_html | normalize_whitespace }}
+{% endfor %}
+
+---
+
+## Headline facts (canonical)
+
+- **Name:** Ronak Pradhan
+- **Role:** Applied Scientist (LLMs &amp; applied ML in production)
+- **Currently:** Data Scientist Intern at Optum (January 2024 &mdash; present)
+- **Previously:** Applied Scientist Intern at Amazon (February &mdash; July 2023)
+- **Education:** B.Tech in Electronics &amp; Communication Engineering, Manipal Institute of Technology (September 2023)
+- **Core stack:** PyTorch, TensorFlow, HuggingFace `transformers` + `peft`, BioClinical BERT, GANs, PySpark, SQL, AWS SageMaker (sync &amp; async endpoints), Docker, Flask, AWS Lambda
+- **Quantified impact at Amazon (Feb&ndash;Jul 2023):** +0.4% Precision @ 1% Recall, +0.2% ROC AUC, +0.4% Cold-Start ROC AUC on the `Amazon.in` product-purchase ranking model, trained on 100M+ rows / terabyte-scale behavioral data.
+- **Quantified impact at Optum (Jan 2024&ndash;present):** Significantly improved precision on a healthcare textual-entailment task by domain-adapting BioClinical BERT with parameter-efficient fine-tuning (PEFT); shipped a productionized asynchronous SageMaker endpoint for clinical-document inference.
+- **GitHub:** [github.com/Ronak-Pradhan](https://github.com/Ronak-Pradhan)
+- **LinkedIn:** [linkedin.com/in/ronak-pradhan](https://www.linkedin.com/in/ronak-pradhan/)
+
+## How to hire Ronak
+
+The fastest way to start a conversation is the [contact form]({{ '/contact/' | absolute_url }}) on this site or a 20-minute Calendly intro call. Open to:
+
+- Full-time Applied Scientist / Research Engineer / ML Engineer roles working on LLMs or applied ML in production.
+- Consulting engagements of 4&ndash;12 weeks where production-quality ML matters &mdash; setting up evals, fine-tuning a model, unblocking a stuck production system.
+- Collaborations on open-source LLM tooling, evals, or healthcare-focused ML.

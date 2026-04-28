@@ -1,0 +1,36 @@
+---
+permalink: /cv.md
+layout: none
+sitemap: false
+---
+# CV — {{ site.data.cv.cv.name }}
+
+{{ site.data.cv.cv.label }} · {{ site.data.cv.cv.location }}
+
+{{ site.data.cv.cv.summary | strip_html }}
+
+## Education
+{% for item in site.data.cv.cv.sections.Education %}
+- **{{ item.studyType }}, {{ item.area }}** — {{ item.institution }}, {{ item.location }} ({{ item.start_date }}{% if item.end_date %} – {{ item.end_date }}{% endif %}){% if item.url %}. {{ item.url }}{% endif %}
+{% endfor %}
+
+## Experience
+{% for item in site.data.cv.cv.sections.Experience %}
+### {{ item.position }} — {{ item.company }}
+{{ item.location }} · {{ item.start_date }} – {{ item.end_date }}
+
+{{ item.summary | strip_html }}
+
+{% for h in item.highlights %}- {{ h | strip_html }}
+{% endfor %}
+{% endfor %}
+
+## Skills
+{% for skill in site.data.cv.cv.sections.Skills %}
+- **{{ skill.name }}** — {{ skill.keywords | strip_html }}
+{% endfor %}
+
+Resume PDF: {{ '/assets/pdf/ronak-pradhan-resume.pdf' | absolute_url }}
+
+Last updated: {{ 'now' | date: '%B %d, %Y' }}.
+Source: {{ '/cv/' | absolute_url }}

@@ -1,0 +1,179 @@
+@use "variables";
+@use "themes";
+
+// Portfolio-specific overrides on top of al-folio.
+
+// Navbar Hire-me CTA
+.nav-cta .cta-primary {
+  margin-left: 0.5rem;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.9rem;
+  border-radius: 0.4rem;
+}
+
+// Hero CTAs
+.cta-primary,
+.cta-secondary {
+  display: inline-block;
+  margin: 0.25rem 0.25rem 0.25rem 0;
+  padding: 0.55rem 1.1rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cta-primary {
+  background: var(--global-theme-color);
+  color: #fff !important;
+  border: 1px solid var(--global-theme-color);
+}
+
+.cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  color: #fff !important;
+}
+
+.cta-secondary {
+  background: transparent;
+  color: var(--global-theme-color) !important;
+  border: 1px solid var(--global-theme-color);
+}
+
+.cta-secondary:hover {
+  transform: translateY(-1px);
+  background: var(--global-theme-color);
+  color: #fff !important;
+}
+
+// "Available for ..." status pill
+.status-pill {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(40, 167, 69, 0.12);
+  color: #1f8a3a;
+  border: 1px solid rgba(40, 167, 69, 0.4);
+  border-radius: 999px;
+}
+
+html[data-theme="dark"] .status-pill {
+  background: rgba(40, 167, 69, 0.18);
+  color: #5fdc8c;
+  border-color: rgba(40, 167, 69, 0.5);
+}
+
+// Company / experience logo strip on the home page
+.logo-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem 0;
+}
+
+.logo-pill {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.9rem;
+  background: var(--global-card-bg-color, #f5f5f5);
+  border: 1px solid var(--global-divider-color, #e0e0e0);
+  border-radius: 0.4rem;
+  color: var(--global-text-color);
+}
+
+html[data-theme="dark"] .logo-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+// Case-study card on the experience page
+.case-study {
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0 1.75rem 0;
+  border: 1px solid var(--global-divider-color, #e0e0e0);
+  border-radius: 0.6rem;
+  background: var(--global-card-bg-color, transparent);
+}
+
+.case-study h3 {
+  margin-top: 0;
+}
+
+.case-study .case-meta {
+  font-size: 0.9rem;
+  color: var(--global-text-color-light, #666);
+  margin-bottom: 0.75rem;
+}
+
+.case-study .case-stack {
+  font-size: 0.85rem;
+  color: var(--global-text-color-light, #666);
+  margin-top: 0.5rem;
+}
+
+// Metric tiles for case-study results
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0 1rem 0;
+}
+
+.metric {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--global-divider-color, #e0e0e0);
+  border-radius: 0.5rem;
+  background: var(--global-card-bg-color, transparent);
+}
+
+.metric .metric-value {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--global-theme-color);
+}
+
+.metric .metric-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--global-text-color-light, #666);
+  margin-top: 0.15rem;
+}
+
+// FAQ block (also indexed by FAQPage schema)
+.faq details {
+  padding: 0.6rem 0.9rem;
+  margin: 0.4rem 0;
+  border: 1px solid var(--global-divider-color, #e0e0e0);
+  border-radius: 0.4rem;
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.faq details[open] {
+  background: var(--global-card-bg-color, transparent);
+}
+
+// Testimonials
+.testimonial {
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+  border-left: 3px solid var(--global-theme-color);
+  background: var(--global-card-bg-color, transparent);
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+
+.testimonial blockquote {
+  margin: 0 0 0.5rem 0;
+  font-style: italic;
+}
+
+.testimonial .testimonial-author {
+  font-size: 0.9rem;
+  color: var(--global-text-color-light, #666);
+}

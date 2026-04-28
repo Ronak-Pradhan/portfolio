@@ -1,0 +1,20 @@
+---
+permalink: /projects.md
+layout: none
+sitemap: false
+---
+# Projects — {{ site.first_name }} {{ site.last_name }}
+
+Open-source and personal ML projects. Code is on GitHub: https://github.com/Ronak-Pradhan
+
+{% for project in site.projects %}
+## {{ project.title }}
+
+{{ project.description }}
+{% if project.github %}Repo: {{ project.github }}{% endif %}
+{% if project.category %}Category: {{ project.category }}{% endif %}
+
+{% endfor %}
+
+Last updated: {{ 'now' | date: '%B %d, %Y' }}.
+Source: {{ '/projects/' | absolute_url }}

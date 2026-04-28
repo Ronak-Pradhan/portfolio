@@ -1,0 +1,82 @@
+---
+permalink: /experience.md
+layout: none
+sitemap: false
+---
+# Experience — {{ site.first_name }} {{ site.last_name }}
+
+Two production case studies from my time at Amazon and Optum. Each walks through the problem, approach, results with concrete numbers, stack, and what I would do differently.
+
+---
+
+## Domain-adapting LLMs for healthcare reasoning — Optum
+
+Data Scientist Intern · January 2024 – Present · Healthcare / NLP
+
+### Context
+
+Optum's clinical reasoning workflows depend on accurately interpreting complex healthcare documents (discharge summaries, prior authorization narratives, clinical notes). Off-the-shelf LLMs underperform because they have not seen enough clinical language and they hallucinate on edge cases that matter clinically.
+
+### Problem
+
+Build a domain-adapted LLM pipeline that can perform sophisticated reasoning on healthcare documents at production quality — specifically improve textual-entailment precision so downstream automation does not act on false positives.
+
+### Approach
+
+1. Literature scan — surveyed clinical-NLP and PEFT (LoRA, QLoRA, instruction tuning, BioClinical BERT family) to pick a starting point that balances quality and cost.
+2. Data curation — built a high-quality entailment dataset from internal sources, with careful label-quality review.
+3. Fine-tuning — specialized BioClinical BERT with `transformers` + `peft`, comparing full fine-tuning vs PEFT under the same compute budget.
+4. Serving — wrapped the winning model in a Flask service, dockerized it, deployed it to AWS SageMaker as an asynchronous endpoint.
+5. Evaluation — ran ablations on precision vs recall, error-sliced by document type, and surfaced slice-level metrics to stakeholders.
+
+### Results
+
+- Significantly improved precision on textual-entailment without losing recall in the operating range.
+- Shipped a production async endpoint on SageMaker — not a notebook prototype.
+- Documented the eval methodology so future iterations can be benchmarked against the same harness.
+
+### Stack
+
+PyTorch, HuggingFace `transformers` + `peft`, BioClinical BERT, Flask, Docker, AWS SageMaker (async endpoint), Python.
+
+---
+
+## Improving product retrieval for Amazon.in with GANs and LLMs — Amazon
+
+Applied Scientist Intern · February 2023 – July 2023 · Recommender systems / IR
+
+### Context
+
+Product retrieval on Amazon.in is a classic retrieval-then-rank pipeline operating at terabyte scale. Even a fractional improvement in Precision@1%R moves real revenue at Amazon's volume, and cold-start — surfacing newly listed products with little behavioral signal — is one of the hardest parts of the system.
+
+### Problem
+
+Push retrieval quality on three axes simultaneously: high-precision head, overall ROC AUC, and cold-start ROC AUC, without regressing latency or training cost.
+
+### Approach
+
+1. Research integration — rapidly absorbed recent retrieval / GAN / LLM literature; identified candidates likely to help with cold-start and query understanding.
+2. Data engineering — built a PySpark pipeline over 100M+ rows / terabyte-scale behavioral logs, with careful negative sampling.
+3. Modeling — fine-tuned advanced ML models including GANs and LLMs, tracking three eval slices in parallel.
+4. Eval and analysis — produced ablation tables and error analyses; pulled actionable insights from model outputs.
+5. Stakeholder review — circulated design and results to 10+ experienced scientists, took feedback, iterated, and shipped.
+
+### Results
+
+- +0.4% Precision @ 1% Recall.
+- +0.2% ROC AUC.
+- +0.4% Cold-Start ROC AUC.
+- Detailed project documentation and a reproducible eval harness.
+
+### Stack
+
+PyTorch, HuggingFace, GANs, LLMs, PySpark, SQL, Amazon-internal modeling and serving infrastructure.
+
+### What I would do differently
+
+Invest earlier in eval-set quality before iterating on models. A chunk of the cycles in the middle of the project went to chasing apparent regressions that turned out to be eval noise.
+
+---
+
+Last updated: {{ 'now' | date: '%B %d, %Y' }}.
+Source: {{ '/experience/' | absolute_url }}

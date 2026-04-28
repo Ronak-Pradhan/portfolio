@@ -1,0 +1,95 @@
+---
+permalink: /robots.txt
+sitemap: false
+---
+# robots.txt for {{ site.url }}{{ site.baseurl }}/
+# Default: allow all crawlers.
+User-agent: *
+Disallow:
+
+# ---------------------------------------------------------------------------
+# AI / LLM crawlers — explicitly allowed.
+# These are citation-oriented bots that surface this site in answers from
+# ChatGPT, Claude, Perplexity, Google AI Overviews / Gemini, etc. Listing
+# them explicitly avoids accidental blocks from any default-deny rules a
+# host or theme might add upstream.
+# ---------------------------------------------------------------------------
+
+# OpenAI
+User-agent: GPTBot
+Disallow:
+
+User-agent: OAI-SearchBot
+Disallow:
+
+User-agent: ChatGPT-User
+Disallow:
+
+# Anthropic
+User-agent: ClaudeBot
+Disallow:
+
+User-agent: Claude-Web
+Disallow:
+
+User-agent: anthropic-ai
+Disallow:
+
+# Perplexity
+User-agent: PerplexityBot
+Disallow:
+
+User-agent: Perplexity-User
+Disallow:
+
+# Google (Gemini / AI Overviews — separate from Googlebot)
+User-agent: Google-Extended
+Disallow:
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Disallow:
+
+# Bing / Copilot
+User-agent: bingbot
+Disallow:
+
+# Common Crawl (used as training data by many models)
+User-agent: CCBot
+Disallow:
+
+# DuckDuckGo Assist
+User-agent: DuckAssistBot
+Disallow:
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Disallow:
+
+User-agent: Meta-ExternalFetcher
+Disallow:
+
+# Mistral
+User-agent: MistralAI-User
+Disallow:
+
+# You.com
+User-agent: YouBot
+Disallow:
+
+# ByteDance / Doubao
+User-agent: Bytespider
+Disallow:
+
+# Cohere
+User-agent: cohere-ai
+Disallow:
+
+# ---------------------------------------------------------------------------
+# Sitemaps and LLM-friendly index files
+# ---------------------------------------------------------------------------
+Sitemap: {{ site.baseurl | prepend: site.url }}/sitemap.xml
+
+# AI-readable index of the site (Markdown):
+# {{ site.baseurl | prepend: site.url }}/llms.txt
+# {{ site.baseurl | prepend: site.url }}/llms-full.txt

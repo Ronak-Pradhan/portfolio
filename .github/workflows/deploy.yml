@@ -1,0 +1,141 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - "assets/**"
+      - "_sass/**"
+      - "_scripts/**"
+      - "**.bib"
+      - "**.html"
+      - "**.js"
+      - "**.liquid"
+      - "**/*.md"
+      - "**.yml"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - "!.github/workflows/axe.yml"
+      - "!.github/workflows/broken-links.yml"
+      - "!.github/workflows/deploy-docker-tag.yml"
+      - "!.github/workflows/deploy-image.yml"
+      - "!.github/workflows/docker-slim.yml"
+      - "!.github/workflows/lighthouse-badger.yml"
+      - "!.github/workflows/prettier.yml"
+      - "!lighthouse_results/**"
+      - "!CONTRIBUTING.md"
+      - "!CUSTOMIZE.md"
+      - "!FAQ.md"
+      - "!INSTALL.md"
+      - "!README.md"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - "assets/**"
+      - "_sass/**"
+      - "_scripts/**"
+      - "**.bib"
+      - "**.html"
+      - "**.js"
+      - "**.liquid"
+      - "**/*.md"
+      - "**.yml"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - "!.github/workflows/axe.yml"
+      - "!.github/workflows/broken-links.yml"
+      - "!.github/workflows/deploy-docker-tag.yml"
+      - "!.github/workflows/deploy-image.yml"
+      - "!.github/workflows/docker-slim.yml"
+      - "!.github/workflows/lighthouse-badger.yml"
+      - "!.github/workflows/prettier.yml"
+      - "!lighthouse_results/**"
+      - "!CONTRIBUTING.md"
+      - "!CUSTOMIZE.md"
+      - "!FAQ.md"
+      - "!INSTALL.md"
+      - "!README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    # available images: https://github.com/actions/runner-images#available-images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Setup Ruby 💎
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.5"
+          bundler-cache: true
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip" # caching pip dependencies
+      - name: Update _config.yml ⚙️
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          commitChange: false
+          valueFile: "_config.yml"
+          propertyPath: "giscus.repo"
+          value: ${{ github.repository }}
+      - name: Install and Build 🔧
+        run: |
+          sudo apt-get update && sudo apt-get install -y imagemagick
+          pip3 install --upgrade nbconvert
+          export JEKYLL_ENV=production
+          bundle exec jekyll build
+      - name: Purge unused CSS 🧹
+        run: |
+          npm install -g purgecss
+          purgecss -c purgecss.config.js
+      - name: Deploy 🚀
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site
+
+      # ---------------------------------------------------------------------
+      # IndexNow: ping Bing / Yandex / others to re-crawl on every deploy.
+      # Activate by:
+      #   1. Generating a key (any GUID-like string).
+      #   2. Adding the key as a GitHub Actions secret named INDEXNOW_KEY.
+      #   3. Publishing the key as a static file at <site>/<key>.txt
+      #      (content of the file = the key itself). Use Jekyll's
+      #      `keep_files` or place it in /assets/ with the same filename.
+      # The step below silently no-ops if the secret is unset, so it's
+      # safe to leave enabled.
+      # ---------------------------------------------------------------------
+      - name: Ping IndexNow 🔔
+        if: github.event_name != 'pull_request' && env.INDEXNOW_KEY != ''
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          SITE_HOST: ronak-pradhan.github.io
+        run: |
+          set -euo pipefail
+          # Submit the homepage and the AI-friendly index files. Add or remove
+          # URLs as the site grows.
+          urls='[
+            "https://${SITE_HOST}/portfolio/",
+            "https://${SITE_HOST}/portfolio/experience/",
+            "https://${SITE_HOST}/portfolio/projects/",
+            "https://${SITE_HOST}/portfolio/blog/",
+            "https://${SITE_HOST}/portfolio/cv/",
+            "https://${SITE_HOST}/portfolio/contact/",
+            "https://${SITE_HOST}/portfolio/llms.txt",
+            "https://${SITE_HOST}/portfolio/llms-full.txt",
+            "https://${SITE_HOST}/portfolio/sitemap.xml"
+          ]'
+          curl -fsS -X POST "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json" \
+            -d "{\"host\":\"${SITE_HOST}\",\"key\":\"${INDEXNOW_KEY}\",\"urlList\":${urls}}" \
+            || echo "IndexNow ping failed (non-fatal)."

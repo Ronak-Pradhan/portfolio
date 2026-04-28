@@ -1,0 +1,10 @@
+# Maps publication venue abbreviations (the `abbr:` field in your BibTeX)
+# to a colored badge / link on the publications page. Used by jekyll-scholar.
+#
+# Example:
+# "ICLR":
+#   url: https://iclr.cc/
+#   color: "#1f4e79"
+
+"Notes":
+  color: "#6f42c1"

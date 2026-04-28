@@ -1,0 +1,166 @@
+{% comment %}
+  Rich JSON-LD structured data for entity recognition + Knowledge Panel signals.
+
+  Emits:
+  - Person (with sameAs from _data/socials.yml)
+  - ProfilePage on / (the about page)
+  - BreadcrumbList on every non-home page
+  - WebSite + SearchAction on every page
+  - BlogPosting / Article on blog posts (referencing Person via @id)
+  - FAQPage on pages whose front matter declares `faq: true` (entries from _data/faq.yml)
+  - CollectionPage on listing pages (projects, blog index, publications)
+
+  All Person references share the same @id ({{ site.url }}{{ site.baseurl }}/#person)
+  so Google can stitch the entity graph together across pages.
+{% endcomment %}
+
+{% capture author_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %} {{ site.last_name }}{% endcapture %}
+{% assign person_id = site.url | append: site.baseurl | append: '/#person' %}
+{% assign website_id = site.url | append: site.baseurl | append: '/#website' %}
+{% assign page_url = page.url | replace:'index.html','' | absolute_url %}
+
+{% comment %}
+  Build sameAs URL list from socials.yml. We accumulate into a |-separated
+  string (since standard Liquid does not have a `push` filter) and split at
+  the end. URLs are prepended with the separator so we can safely strip the
+  leading pipe and avoid trailing empties on split.
+{% endcomment %}
+{% capture sameas_buffer %}{% if site.data.socials.linkedin_username %}|https://www.linkedin.com/in/{{ site.data.socials.linkedin_username }}/{% endif %}{% if site.data.socials.github_username %}|https://github.com/{{ site.data.socials.github_username }}{% endif %}{% if site.data.socials.x_username %}|https://twitter.com/{{ site.data.socials.x_username }}{% endif %}{% if site.data.socials.scholar_userid %}|https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}{% endif %}{% if site.data.socials.orcid_id %}|https://orcid.org/{{ site.data.socials.orcid_id }}{% endif %}{% if site.data.socials.huggingface_id %}|https://huggingface.co/{{ site.data.socials.huggingface_id }}{% endif %}{% if site.data.socials.medium_username %}|https://medium.com/@{{ site.data.socials.medium_username }}{% endif %}{% if site.data.socials.wikidata_id %}|https://www.wikidata.org/wiki/{{ site.data.socials.wikidata_id }}{% endif %}{% if site.data.socials.dblp_url %}|{{ site.data.socials.dblp_url }}{% endif %}{% endcapture %}
+{% assign sameas_buffer = sameas_buffer | remove_first: '|' %}
+{% if sameas_buffer != '' %}
+  {% assign sameas = sameas_buffer | split: '|' %}
+{% else %}
+  {% assign sameas = '' | split: ',' %}
+{% endif %}
+
+{% comment %} Detect blog post {% endcomment %}
+{% assign is_blog_post = false %}
+{% if page.url contains '/blog/' and page.layout == 'post' %}
+  {% assign is_blog_post = true %}
+{% endif %}
+
+<!-- Person + WebSite (emitted on every page) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "{{ person_id }}",
+      "name": "{{ author_name }}",
+      "givenName": "{{ site.first_name }}",
+      "familyName": "{{ site.last_name }}",
+      "url": "{{ site.url }}{{ site.baseurl }}/",
+      "jobTitle": "Applied Scientist",
+      "description": {{ site.description | strip_newlines | strip_html | jsonify }},
+      "image": "{{ '/assets/img/prof_pic.jpg' | absolute_url }}",
+      "knowsAbout": [
+        "Large Language Models",
+        "LLM Fine-tuning",
+        "Parameter-Efficient Fine-Tuning (PEFT)",
+        "BioClinical BERT",
+        "Healthcare NLP",
+        "Recommender Systems",
+        "Information Retrieval",
+        "PyTorch",
+        "HuggingFace Transformers",
+        "AWS SageMaker",
+        "Docker",
+        "PySpark",
+        "Machine Learning Engineering",
+        "Applied Machine Learning"
+      ],
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Manipal Institute of Technology",
+          "url": "https://manipal.edu/mit.html"
+        }
+      ],
+      "worksFor": [
+        {
+          "@type": "Organization",
+          "name": "Optum",
+          "url": "https://www.optum.com/"
+        }
+      ],
+      "sameAs": {{ sameas | jsonify }}
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ website_id }}",
+      "url": "{{ site.url }}{{ site.baseurl }}/",
+      "name": "{{ author_name }}",
+      "description": {{ site.description | strip_newlines | strip_html | jsonify }},
+      "publisher": { "@id": "{{ person_id }}" },
+      "inLanguage": "{{ site.lang | default: 'en' }}"
+    }
+    {% if page.permalink == '/' %}
+    ,{
+      "@type": "ProfilePage",
+      "@id": "{{ page_url }}#profilepage",
+      "url": "{{ page_url }}",
+      "name": "{{ author_name }} — Applied Scientist",
+      "mainEntity": { "@id": "{{ person_id }}" },
+      "about": { "@id": "{{ person_id }}" },
+      "isPartOf": { "@id": "{{ website_id }}" },
+      "dateModified": "{{ site.time | date_to_xmlschema }}"
+    }
+    {% endif %}
+    {% if page.permalink and page.permalink != '/' %}
+    ,{
+      "@type": "BreadcrumbList",
+      "@id": "{{ page_url }}#breadcrumbs",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ site.url }}{{ site.baseurl }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page.title | default: page.permalink | jsonify }},
+          "item": "{{ page_url }}"
+        }
+      ]
+    }
+    {% endif %}
+    {% if is_blog_post %}
+    ,{
+      "@type": "BlogPosting",
+      "@id": "{{ page.url | absolute_url }}#article",
+      "mainEntityOfPage": "{{ page.url | absolute_url }}",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | jsonify }},
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+      "author": { "@id": "{{ person_id }}" },
+      "publisher": { "@id": "{{ person_id }}" },
+      "image": "{{ page.thumbnail | default: site.og_image | absolute_url }}",
+      "keywords": {{ page.tags | default: site.keywords | jsonify }},
+      "inLanguage": "{{ site.lang | default: 'en' }}"
+    }
+    {% endif %}
+    {% if page.faq and site.data.faq %}
+    ,{
+      "@type": "FAQPage",
+      "@id": "{{ page_url }}#faq",
+      "mainEntity": [
+        {% for entry in site.data.faq %}
+        {
+          "@type": "Question",
+          "name": {{ entry.question | jsonify }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ entry.answer | strip_html | strip_newlines | jsonify }}
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }
+    {% endif %}
+  ]
+}
+</script>
