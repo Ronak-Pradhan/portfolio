@@ -1,7 +1,6 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import PageTitle from '@/components/PageTitle'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
@@ -12,7 +11,8 @@ import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { notFound } from 'next/navigation'
+import NotFoundPage from 'app/not-found'
+import { withExportFallback, PLACEHOLDER_BLOG_SLUG } from '@/lib/exportParams'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -27,14 +27,13 @@ export async function generateMetadata(props: {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   const post = allBlogs.find((p) => p.slug === slug)
-  const authorList = post?.authors || ['default']
+  if (!post) return undefined
+
+  const authorList = post.authors || ['default']
   const authorDetails = authorList.map((author) => {
     const authorResults = allAuthors.find((p) => p.slug === author)
     return coreContent(authorResults as Authors)
   })
-  if (!post) {
-    return
-  }
 
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
@@ -43,11 +42,9 @@ export async function generateMetadata(props: {
   if (post.images) {
     imageList = typeof post.images === 'string' ? [post.images] : post.images
   }
-  const ogImages = imageList.map((img) => {
-    return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
+  const ogImages = imageList.map((img) => ({
+    url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
+  }))
 
   return {
     title: post.title,
@@ -74,17 +71,19 @@ export async function generateMetadata(props: {
 }
 
 export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  const params = allBlogs.map((p) => ({
+    slug: p.slug.split('/').map((name) => decodeURI(name)),
+  }))
+  return withExportFallback(params, { slug: PLACEHOLDER_BLOG_SLUG })
 }
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
-  // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
-    return notFound()
+    return <NotFoundPage />
   }
 
   const prev = sortedCoreContents[postIndex + 1]
@@ -97,12 +96,10 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   })
   const mainContent = coreContent(post)
   const jsonLd = post.structuredData
-  jsonLd['author'] = authorDetails.map((author) => {
-    return {
-      '@type': 'Person',
-      name: author.name,
-    }
-  })
+  jsonLd['author'] = authorDetails.map((author) => ({
+    '@type': 'Person',
+    name: author.name,
+  }))
 
   const Layout = layouts[post.layout || defaultLayout]
 
