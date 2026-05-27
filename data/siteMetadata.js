@@ -8,9 +8,10 @@ const siteMetadata = {
   theme: 'system',
   siteUrl: 'https://ronak-pradhan.github.io/portfolio',
   siteRepo: 'https://github.com/Ronak-Pradhan/portfolio',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+  // Paths without BASE_PATH — siteUrl already includes /portfolio; metadataBase resolves these.
+  siteLogo: '/static/images/logo.png',
   // Reuses headshot until you add a dedicated 1200×630 OG image (optional).
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/avatar.jpg`,
+  socialBanner: '/static/images/avatar.jpg',
   email: 'ronakprad@gmail.com',
   github: 'https://github.com/Ronak-Pradhan',
   linkedin: 'https://www.linkedin.com/in/ronak-pradhan/',
